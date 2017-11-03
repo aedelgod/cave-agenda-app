@@ -1,15 +1,3 @@
-<?php
-/**
- * Template part for displaying page content in page.php
- *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
- * @package WordPress
- * @subpackage Terrell
- * @since 1.0
- * @version 1.0
- */
-?>
             <?php  
                 query_posts('category_name=Agendas&order=DESC');
                 while (have_posts()) : the_post();
