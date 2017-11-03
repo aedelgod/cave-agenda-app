@@ -14,7 +14,7 @@
 <tbody>
 <tr>
 <td><?php the_title( '<span>', '<span>' ); ?></td>
-<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); ?><span><?php echo date('M d, Y', $date); ?></span</td>
+<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('M d, Y', $date); ?></td>
 <td><button type="button" data-toggle="modal" data-target="#myModal-<?php $content = the_field('agenda_id', $post->ID); ?>" class="wpcf7-form-control wpcf7-submit">View Agenda</button></td>
 <td><button type="button" data-toggle="modal" data-target="#myModal-<?php $content = the_field('meeting_date', $post->ID); ?>" class="wpcf7-form-control wpcf7-submit">View Meeting</button></td>
 </tr>
@@ -74,8 +74,8 @@
 </script> 
 
             <?php 
-                endwhile;
-                wp_reset_query();
+                endwhile; /* It loops derp */
+                wp_reset_query(); 
             ?>
 <script>
 $(function(){
