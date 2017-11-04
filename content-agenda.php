@@ -55,7 +55,7 @@ $the_query = new WP_Query( $args ); ?>
 <table id="theTable" class="rows">
 <thead>
   <tr>
-  <th>Planning & Zoning</th><th>Date</th><th>Agenda</th><th>Meeting</th>
+  <th>Planning &amp; Zoning</th><th>Date</th><th>Agenda</th><th>Meeting</th>
   </tr>
 </thead>
 <tbody>
