@@ -9,13 +9,13 @@
 <?php //and awaaaaay we go
 $args = array(
 'category_name' => 'Agendas',
-'order' => 'ASC', 
+'order' => 'DESC', 
+'orderby' => 'date', 
 'numberposts'	=> -1, 
 'post_type' => 'post', 
 'meta_key' => 'type',
 'meta_value' => 'council'
  );
-
 $the_query = new WP_Query( $args ); ?>
 
 <?php if( $the_query->have_posts() ): ?>
@@ -29,12 +29,17 @@ $the_query = new WP_Query( $args ); ?>
 
 <?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
 
+  <?php //Lick, lick, lick, my BALLS!
+  $yturl = get_field('youtube_video_id', $post->ID);
+preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $yturl, $match);
+$youtube_id = $match[1]; //And that's the wayyyyyy the news goes! ?>
+
 
 <tr>
 <td><?php the_title(); ?></td>
-<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('Y-m-d', $date); ?></td>
+<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('M d, Y', $date); ?></td>
 <td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('agenda_id', $post->ID); ?>" class="tablebutton">View Agenda</button></td>
-<td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('meeting_date', $post->ID); ?>" class="tablebutton">View Meeting</button></td>
+<td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php echo $match[1]; //$content = the_field('meeting_date', $post->ID); ?>" class="tablebutton">View Meeting</button></td>
 </tr>
 <?php endwhile; ?>
 </tbody></table><br>
@@ -55,13 +60,13 @@ $('#theCouncilTable').paginate({ limit: 5 });
 <?php
 $args = array(
 'category_name' => 'Agendas',
-'order' => 'ASC', 
+'order' => 'DESC', 
+'orderby' => 'date', 
 'numberposts'	=> -1, 
 'post_type' => 'post', 
 'meta_key' => 'type',
 'meta_value' => 'pnz'
  );
-
 $the_query = new WP_Query( $args ); ?>
 
 <?php if( $the_query->have_posts() ): ?>
@@ -74,12 +79,16 @@ $the_query = new WP_Query( $args ); ?>
 <tbody>
 <?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
 
+  <?php //Lick, lick, lick, my BALLS!
+  $yturl = get_field('youtube_video_id', $post->ID);
+preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $yturl, $match);
+$youtube_id = $match[1]; //And that's the wayyyyyy the news goes! ?>
 
 <tr>
 <td><?php the_title(); ?></td>
 <td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('M d, Y', $date); ?></td>
 <td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('agenda_id', $post->ID); ?>" class="tablebutton">View Agenda</button></td>
-<td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('meeting_date', $post->ID); ?>" class="tablebutton">View Meeting</button></td>
+<td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php echo $match[1]; //$content = the_field('meeting_date', $post->ID); ?>" class="tablebutton">View Meeting</button></td>
 </tr>
 <?php endwhile; ?>
 </tbody></table><br>
@@ -117,14 +126,15 @@ $('#thePNZtable').paginate({ limit: 10 });
 
 
 <!-- Meeting Modal -->
-<div class="modal" id="myModal-<?php $content = the_field('meeting_date', $post->ID); ?>" tabindex="-1" role="dialog" aria-labelledby="ModalLabel-<?php $content = the_field('meeting_date', $post->ID); ?>" aria-hidden="true">
-
-
-  <!-- Meeting Modal content -->
   <?php //Lick, lick, lick, my BALLS!
   $yturl = get_field('youtube_video_id', $post->ID);
 preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $yturl, $match);
 $youtube_id = $match[1]; //And that's the wayyyyyy the news goes! ?>
+<div class="modal" id="myModal-<?php echo $match[1]; // $content = the_field('meeting_date', $post->ID); ?>" tabindex="-1" role="dialog" aria-hidden="true">
+
+
+  <!-- Meeting Modal content -->
+
 
 
   <div class="modal-content">
@@ -138,7 +148,7 @@ $youtube_id = $match[1]; //And that's the wayyyyyy the news goes! ?>
 <a href="https://www.youtube.com/embed/<?php echo $match[1]; ?>?start=30&amp;autoplay=1&amp;rel=0&amp;enablejsapi=1" target="video-<?php echo $match[1]; ?>">30s</a> This is a concept.</div>
 
 
-<iframe class="uyd-embedded" style="display: inline-block; float: inherit;" src="https://docs.google.com/file/d/<?php $content = the_field('agenda_id', $post->ID); ?>/preview?rm=minimal" width="60%" height="500" frameborder="0" scrolling="no" align="right" allowfullscreen="allowfullscreen"></iframe>
+<iframe class="uyd-embedded" style="display: inline-block; float: inherit;" src="https://docs.google.com/file/d/<?php $content = the_field('minutes_id', $post->ID); ?>/preview?rm=minimal" width="60%" height="500" frameborder="0" scrolling="no" align="right" allowfullscreen="allowfullscreen"></iframe>
 
   </div><!-- Meeting Modal content -->
 </div><!-- Meeting Modal -->
@@ -159,7 +169,6 @@ $('.close').live('click', function () {
 jQuery(function($) {
 $("#search").keyup(function () {
     var value = this.value.toLowerCase().trim();
-
     $("table tr").each(function (index) {
         if (!index) return;
         $(this).find("td").each(function () {
