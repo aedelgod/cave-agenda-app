@@ -30,9 +30,9 @@ $the_query = new WP_Query( $args ); ?>
 <?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
 
 
-<tr data-id="<?php $content = the_field('meeting_date', $post->ID); ?>" data-parent="1">
+<tr>
 <td><?php the_title(); ?></td>
-<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('Y-M-d', $date); ?></td>
+<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('Y-m-d', $date); ?></td>
 <td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('agenda_id', $post->ID); ?>" class="tablebutton">View Agenda</button></td>
 <td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('meeting_date', $post->ID); ?>" class="tablebutton">View Meeting</button></td>
 </tr>
