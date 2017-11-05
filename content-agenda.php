@@ -1,8 +1,3 @@
-<?php
-//wp_enqueue_script('datatables', '//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js', array( 'jquery' ));
-//wp_enqueue_style('datatables', '//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css');
-
-?>
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4">
             <input type="search" id="search" value="" class="form-control" placeholder="Search any keywords">
@@ -10,10 +5,11 @@
     </div><br />
 
 <!-- The Council Table -->
+
 <?php //and awaaaaay we go
 $args = array(
 'category_name' => 'Agendas',
-'order' => 'DESC', 
+'order' => 'ASC', 
 'numberposts'	=> -1, 
 'post_type' => 'post', 
 'meta_key' => 'type',
@@ -23,24 +19,30 @@ $args = array(
 $the_query = new WP_Query( $args ); ?>
 
 <?php if( $the_query->have_posts() ): ?>
-<table id="theTable" class="rows">
+<table id="theCouncilTable" class="rows">
 <thead>
   <tr>
   <th>City Council</th><th>Date</th><th>Agenda</th><th>Meeting</th>
   </tr>
 </thead>
 <tbody>
+
 <?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
 
 
-<tr>
+<tr data-id="<?php $content = the_field('meeting_date', $post->ID); ?>" data-parent="1">
 <td><?php the_title(); ?></td>
-<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('M d, Y', $date); ?></td>
+<td><?php $date = strtotime(get_field('meeting_date', $post->ID)); echo date('Y-M-d', $date); ?></td>
 <td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('agenda_id', $post->ID); ?>" class="tablebutton">View Agenda</button></td>
 <td><button type="button" data-toggle="modal" data-backdrop="static" data-target="#myModal-<?php $content = the_field('meeting_date', $post->ID); ?>" class="tablebutton">View Meeting</button></td>
 </tr>
 <?php endwhile; ?>
 </tbody></table><br>
+<script>
+jQuery(function($) {
+$('#theCouncilTable').paginate({ limit: 5 });
+});
+</script>
 <?php else : echo 'Bad Query'; //AIDS! ?>
 <?php endif; ?>
 
@@ -53,7 +55,7 @@ $the_query = new WP_Query( $args ); ?>
 <?php
 $args = array(
 'category_name' => 'Agendas',
-'order' => 'DESC', 
+'order' => 'ASC', 
 'numberposts'	=> -1, 
 'post_type' => 'post', 
 'meta_key' => 'type',
@@ -63,7 +65,7 @@ $args = array(
 $the_query = new WP_Query( $args ); ?>
 
 <?php if( $the_query->have_posts() ): ?>
-<table id="theTable" class="rows">
+<table id="thePNZtable" class="rows">
 <thead>
   <tr>
   <th>Planning &amp; Zoning</th><th>Date</th><th>Agenda</th><th>Meeting</th>
@@ -81,6 +83,11 @@ $the_query = new WP_Query( $args ); ?>
 </tr>
 <?php endwhile; ?>
 </tbody></table><br>
+<script>
+jQuery(function($) {
+$('#thePNZtable').paginate({ limit: 10 });
+});
+</script>
 <?php else : echo 'Bad Query'; //GRASSSSS... tastes bad! ?>
 <?php endif; ?>
 
@@ -144,6 +151,10 @@ $('.close').live('click', function () {
 })
 });
 </script>
+            <?php 
+                endwhile;
+                wp_reset_query(); //Hit the sack, Jack!
+            ?>
 <script>
 jQuery(function($) {
 $("#search").keyup(function () {
@@ -161,8 +172,3 @@ $("#search").keyup(function () {
 });
 });
 </script>
-
-            <?php 
-                endwhile;
-                wp_reset_query(); //Hit the sack, Jack!
-            ?>
