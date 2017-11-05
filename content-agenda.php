@@ -1,3 +1,14 @@
+<?php
+//wp_enqueue_script('datatables', '//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js', array( 'jquery' ));
+//wp_enqueue_style('datatables', '//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css');
+
+?>
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4">
+            <input type="search" id="search" value="" class="form-control" placeholder="Search any keywords">
+        </div>
+    </div><br />
+
 <!-- The Council Table -->
 <?php //and awaaaaay we go
 $args = array(
@@ -131,6 +142,23 @@ $('.close').live('click', function () {
   $('#myModal-<?php $content = the_field('meeting_date', $post->ID); ?>').hide();
   $('#theVideo-<?php echo $match[1]; ?> iframe').attr("src", jQuery("#theVideo-<?php echo $match[1]; ?> iframe").attr("src"));
 })
+});
+</script>
+<script>
+jQuery(function($) {
+$("#search").keyup(function () {
+    var value = this.value.toLowerCase().trim();
+
+    $("table tr").each(function (index) {
+        if (!index) return;
+        $(this).find("td").each(function () {
+            var id = $(this).text().toLowerCase().trim();
+            var not_found = (id.indexOf(value) == -1);
+            $(this).closest('tr').toggle(!not_found);
+            return not_found;
+        });
+    });
+});
 });
 </script>
 
