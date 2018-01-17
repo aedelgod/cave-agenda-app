@@ -1,0 +1,32 @@
+RewriteEngine On
+RewriteCond %{THE_REQUEST} (?:limit|union|select|concat|1==1|like|drop|#|--) [NC]
+RewriteRule .? - [F,L]
+
+RewriteCond %{QUERY_STRING} (src=) [NC]
+RewriteCond %{QUERY_STRING} ((http(s)?)://)? [NC]
+RewriteCond %{QUERY_STRING} !((.+\.)?(domain\.com)) [NC]
+RewriteRule .? / [F,L]
+
+<IfModule mod_headers.c>
+ 
+ Header set X-Frame-Options "DENY"
+ 
+ <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ico|jpe?g|js|json(ld)?|m4[av]|manifest|map|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
+     Header unset X-Frame-Options
+ </FilesMatch>
+ 
+</IfModule>
+
+<IfModule mod_autoindex.c>
+ Options -Indexes
+</IfModule>
+
+<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|psd|sh|sql|sw[op])|~)$">
+ 
+ <IfModule !mod_authz_core.c>
+ Order allow,deny
+ Deny from all
+ Satisfy All
+ </IfModule>
+ 
+ </FilesMatch>
